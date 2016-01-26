@@ -8,15 +8,16 @@ openmusic-piano-keyboard * {
 
 openmusic-piano-keyboard {
 	display: inline-block;
-	border: 1px solid #333;
+	/*border: 1px solid #333;*/
 	position: relative;
 	width: auto;
 	font-size: 1.25rem;
 	outline: none;
+	
 }
 
 openmusic-piano-keyboard:focus {
-	border: 1px solid red;
+	/*border: 1px solid red;*/
 }
 
 openmusic-piano-keyboard .key {
@@ -34,6 +35,7 @@ openmusic-piano-keyboard .key {
 	transition: all 0.2s ease-in;
 	background: #efefef;
 	z-index: 0;
+	height:280px;
 }
 
 openmusic-piano-keyboard .key + .key {
@@ -65,6 +67,7 @@ openmusic-piano-keyboard .key.black {
 	padding-left: 0.25rem;
 	width: 2rem;
 	box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
+	height:170px;
 }
 
 openmusic-piano-keyboard .key:hover {
@@ -78,13 +81,13 @@ openmusic-piano-keyboard .key.black:hover {
 }
 
 openmusic-piano-keyboard .key:active, openmusic-piano-keyboard .key.active {
-	background: #fff;
+	background: #aaa;
 	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.active {
 	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.9);
-	background: #000;
+	background: #666;
 	color: #ff0;
 }
 

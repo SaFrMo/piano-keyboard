@@ -1,4 +1,4 @@
-(function() {
+ (function() {
 	
 	var proto = Object.create(HTMLElement.prototype);
 
@@ -6,7 +6,7 @@
 		this.pressedKeys = {};
 		this.keyClass = 'key';
 		this.keyBlackClass = 'key black';
-		this.keyboardLayout = 'ZSXDCVGBHNJMQ2W3ER5T6Y7U'.split('');
+		this.keyboardLayout = 'Q2W3ER5T6Y7UZSXDCVGBHNJM,'.split('');
 		this.blackKeys = [ false, true, false, true, false, false, true, false, true, false, true, false ];
 
 		this.rebuildKeyboard();
@@ -15,10 +15,10 @@
 	proto.rebuildKeyboard = function() {
 		this.keys = [];
 		this.numOctaves = this.getAttribute('octaves');
-		initLayout(this);
+		this.initLayout(this);
 	};
 
-	function initLayout(kb) {
+	proto.initLayout = function(kb) {
 		var blacksDiv;
 		var numBlacks = kb.blackKeys.length;
 
@@ -39,11 +39,11 @@
 					label = kb.keyboardLayout[ index ];
 
 				keyDiv.className = isBlack ? kb.keyBlackClass : kb.keyClass;
-				keyDiv.innerHTML = label;
+				//keyDiv.innerHTML = label;
 				keyDiv.dataset.index = index;
 
-				keyDiv.addEventListener('mousedown', makeCallback(kb, onDivMouseDown), false);
-				keyDiv.addEventListener('mouseup', makeCallback(kb, onDivMouseUp), false);
+				keyDiv.addEventListener('mousedown', this.makeCallback(kb, this.onDivMouseDown), false);
+				keyDiv.addEventListener('mouseup', this.makeCallback(kb, this.onDivMouseUp), false);
 
 				kb.keys.push( keyDiv );
 
@@ -67,12 +67,12 @@
 		// let us cycle between keyboards when there's more than one on screen
 		// at the same time, by pressing TAB
 		kb.tabIndex = 1;
-		kb.addEventListener('keydown', makeCallback(kb, onKeyDown), false);
-		kb.addEventListener('keyup', makeCallback(kb, onKeyUp), false);
+		kb.addEventListener('keydown', this.makeCallback(kb, this.onKeyDown), false);
+		kb.addEventListener('keyup', this.makeCallback(kb, this.onKeyUp), false);
 	}
 
 	
-	function makeCallback(kb, fn) {
+	proto.makeCallback = function(kb, fn) {
 
 		var cb = function(e) {
 			fn(kb, e);
@@ -83,25 +83,26 @@
 	}
 
 
-	function onDivMouseDown( keyboard, ev ) {
+	proto.onDivMouseDown = function( keyboard, ev ) {
 
 		var key = ev.target;
-		dispatchNoteOn( keyboard, key.dataset.index );
+		this.dispatchNoteOn( keyboard, key.dataset.index );
 
 	}
 
 
-	function onDivMouseUp( keyboard, ev ) {
+	proto.onDivMouseUp = function( keyboard, ev ) {
 
 		var key = ev.target;
-		dispatchNoteOff( keyboard, key.dataset.index );
+		this.dispatchNoteOff( keyboard, key.dataset.index );
 
 	}
 
 
-	function onKeyDown( keyboard, e ) {
+	proto.onKeyDown = function( keyboard, e ) {
 
-		var index = findKeyIndex( keyboard, e );
+		var index = this.findKeyIndex( keyboard, e );
+		
 
 		// TODO might want to check if it's checked already to prevent the multiple events being fired?
 
@@ -110,35 +111,37 @@
 			return;
 		}
 
-		dispatchNoteOn( keyboard, index );
+		this.dispatchNoteOn( keyboard, index );
 
 	}
 
 
-	function onKeyUp( keyboard, e ) {
+	proto.onKeyUp = function( keyboard, e ) {
 
-		var index = findKeyIndex( keyboard, e );
+		var index = this.findKeyIndex( keyboard, e );
+		
+		
 
 		// Only fire key up if the key is in the defined layout
 		// TODO: maybe move this check to onKeyDown?
 		if( index !== -1 ) {
-			dispatchNoteOff( keyboard, index );
+			this.dispatchNoteOff( keyboard, index );
 		}
 
 	}
 
 
-	function isKeyPressed(keyboard, index) {
+	proto.isKeyPressed = function(keyboard, index) {
 		return keyboard.pressedKeys[index];
 	}
 
 
-	function setKeyPressed(keyboard, index, pressed) {
+	proto.setKeyPressed = function(keyboard, index, pressed) {
 		keyboard.pressedKeys[index] = pressed;
 	}
 
 
-	function findKeyIndex( keyboard, e ) {
+	proto.findKeyIndex = function( keyboard, e ) {
 
 		var keyCode = e.keyCode || e.which,
 			keyChar = String.fromCharCode( keyCode ),
@@ -149,37 +152,37 @@
 	}
 
 
-	function makeEvent(type, detailData) {
+	proto.makeEvent = function(type, detailData) {
 		return new CustomEvent(type, { detail: detailData });
 	}
 
 
-	function dispatchNoteOn( keyboard, index ) {
-
+	proto.dispatchNoteOn = function( keyboard, index ) {
+	
 		var key = keyboard.keys[index],
 			currentClass = key.className;
 
-		if(isKeyPressed(keyboard, index)) {
+		if(this.isKeyPressed(keyboard, index)) {
 			// Already pressed, are we mouseclicking and keyboarding
 			// at the same time?
 			console.log('already pressed', index);
 			return;
 		}
 
-		setKeyPressed(keyboard, index, true);
+		this.setKeyPressed(keyboard, index, true);
 		key.classList.add('active');
 
-		var evt = makeEvent('noteon', { index: index });
+		var evt = this.makeEvent('noteon', { index: index });
 		keyboard.dispatchEvent(evt);
 	
 	}
 
 
-	function dispatchNoteOff( keyboard, index ) {
+	proto.dispatchNoteOff = function( keyboard, index ) {
 
 		var key = keyboard.keys[index];
 
-		if(!isKeyPressed(keyboard, index)) {
+		if(!this.isKeyPressed(keyboard, index)) {
 			// TODO ghost note offs!? maybe if we press down on one key but
 			// release the mouse in another key?
 			console.error('this key is not pressed', index);
@@ -188,15 +191,16 @@
 
 		key.classList.remove('active');
 
-		setKeyPressed(keyboard, index, false);
+		this.setKeyPressed(keyboard, index, false);
 		
-		var evt = makeEvent('noteoff', { index: index });
+		var evt = this.makeEvent('noteoff', { index: index });
 		keyboard.dispatchEvent(evt);
 
 	}
 
 	//
 
+	
 	var component = {};
 	component.prototype = proto;
 	component.register = function(name) {
@@ -212,6 +216,7 @@
 	} else {
 		component.register('openmusic-piano-keyboard'); // automatic registration
 	}
+	
 
 }).call(this);
 
