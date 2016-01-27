@@ -11,6 +11,7 @@ var notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var middleC;
 
 var chordTypes = [];
+var voicingsDictionary = [];
 
 /* CHORD VOICING FORMAT IN JSON: Intervals
  * Chords are stored in the voicings dictionary as intervals - for example, a root position C6 chord 
@@ -20,10 +21,11 @@ var chordTypes = [];
  
 function parseIntervals(intervals) {
 	var toReturn = [];
+	console.log(intervals);
 	
-	intervals.forEach(function(i) {
-		alert(i);
-	});
+	for (var scaleDegree in intervals) {
+		console.log(scaleDegree);
+	}
 }
 
 /* CHORD VOICING FORMAT IN JS: Half-Steps
@@ -50,14 +52,28 @@ $(document).ready(function() {
 	var middleCLeft = middleC.offset().left;
 	$("#visualKeyboard").scrollLeft(middleCLeft - keyboardCenter + middleCCenter);
 	
-	var i = 0;
+	// Parse JSON data into different chord types (broad categories: maj7, dom7, etc.)
 	for (var key in voicings) {
 		if (voicings.hasOwnProperty(key)) {
 			chordTypes.push(new ChordType(voicings[key], key));
 		}
 	}
 	
-	console.log(chordTypes);
+	// Go through all the broad categories we've saved...
+	var i = 0;
+	for (var chordType in chordTypes) {
+		if (chordTypes.hasOwnProperty(chordType)) {
+			// ...find the individual chords in them...
+			var chordList = chordTypes[chordType]["chords"];
+			var chordQuality = chordTypes[chordType].chordType;
+			for (var i = 0; i < chordList.length; i++) {
+				// ...then translate them into Voicing objects and save them to a master dictionary.
+				voicingsDictionary.push(new Voicing(chordList[i], chordQuality));
+			}
+			
+		}
+	}
+	
 });
 
 function playChord(chord) {
@@ -94,7 +110,12 @@ function ChordType(jsonEntry, chordType) {
 }
 
 // Chord voicing object
-function Voicing(jsonEntry) {
+
+function Voicing(jsonEntry, chordType) {
+	this.chordType = chordType;
 	this.intervals = jsonEntry["intervals"];
 	this.remarks = jsonEntry["remarks"];
+	this.voicing = parseIntervals(this.intervals);
+	
+	console.log(this);
 }
