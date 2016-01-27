@@ -28,6 +28,8 @@
 		blacksDiv = document.createElement('div');
 		kb.appendChild(blacksDiv);
 		blacksDiv.className = 'blacks';
+		
+		var keyNumber = 0;
 
 		for(var i = 0; i < kb.numOctaves; i++) {
 
@@ -37,6 +39,9 @@
 					keyDiv = document.createElement( 'div' ),
 					index = j + numBlacks * i,
 					label = kb.keyboardLayout[ index ];
+					
+				keyDiv.id = keyNumber.toString();
+				keyNumber++;
 
 				keyDiv.className = isBlack ? kb.keyBlackClass : kb.keyClass;
 				//keyDiv.innerHTML = label;
