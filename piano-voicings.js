@@ -6,47 +6,24 @@ var currentOctave = 3;
 var octaveOffset = 0;
 
 var visualKeyboard;
-var root = 0;
+var root = -1;
 var notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var middleC;
+
+var majorIntervalsToHalfSteps = [0, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21];
 
 var chordTypes = [];
 var voicingsDictionary = [];
 
-/* CHORD VOICING FORMAT IN JSON: Intervals
- * Chords are stored in the voicings dictionary as intervals - for example, a root position C6 chord 
- * can be [0, 6, 10, 12], which in C is (C, A, E, G).
- * These need to be parsed to the format below, which is an array of half-steps from the root note.
- */
- 
-function parseIntervals(intervals) {
-	var toReturn = [];
-	console.log(intervals);
-	
-	for (var scaleDegree in intervals) {
-		console.log(scaleDegree);
-	}
-}
-
-/* CHORD VOICING FORMAT IN JS: Half-Steps
- * The root and octave will be provided by the user, and numbers indicate half-steps up from that root.
- *
- * EXAMPLE: C3-A3-E4-G4
- * Root C3
- * [0, 9, 16, 19]
- */
- 
-function Chord(notes) {
-	this.notes = notes;
-}
-
-var majorSix = new Chord([0, 9, 16, 19]);
+//
+//
+//
 
 $(document).ready(function() {
 	visualKeyboard = document.querySelector('openmusic-piano-keyboard');
 	// Key number 48 on this keyboard is middle C
 	middleC = $("#48");
-	playChord(majorSix);
+	//playChord(majorSix);
 	var keyboardCenter = $("#visualKeyboard").width() / 2;
 	var middleCCenter = middleC.width() / 2;
 	var middleCLeft = middleC.offset().left;
@@ -73,8 +50,78 @@ $(document).ready(function() {
 			
 		}
 	}
+
+	voicingsDictionary[2].play();
 	
 });
+
+//
+//
+//
+
+/* CHORD VOICING FORMAT IN JSON: Intervals
+ * Chords are stored in the voicings dictionary as intervals - for example, a root position C6 chord 
+ * can be [0, 6, 10, 12], which in C is (C, A, E, G).
+ * Flats are notated as `b` and sharps are notated as `#`, dims are `o` and augs are `+`.
+ * These need to be parsed to the half-step format below, which is an array of half-steps from the root note.
+ */
+ 
+function parseIntervals(intervals) {
+	var toReturn = [];
+	
+	// Parses string into array of intervals (results look like ["0", "3", "b7", "b9", "#12"])
+	var individualIntervals = intervals.toString().match(/[b]?[+b#ox]?\d+/g);
+	
+	for (var x in individualIntervals) {
+		
+		// Split alterations from scale degree
+		var alteration = individualIntervals[x].match(/[b#o+]/g);
+		var degreeString = individualIntervals[x].match(/\d+/g)[0];
+		var degreeNumber = parseInt(degreeString);
+		
+		var halfSteps = majorIntervalsToHalfSteps[degreeNumber];
+		
+		if (alteration != null) {
+			
+			// Handle 4ths and 5ths (as well as their extensions)
+			if (degreeNumber == 4 || degreeNumber == 5 || degreeNumber == 11 || degreeNumber == 12) {
+				// Augmented 4th or 5th goes up 1 half step
+				if (alteration == "+" || alteration == "#")
+					halfSteps += 1;
+				// Diminished 4th or 5th goes down 1 half step
+				if (alteration == "o" || alteration == "b")
+					halfSteps -= 1;
+			}
+			
+			else {
+				if (alteration == "o")
+					halfSteps -= 2;
+				if (alteration == "b")
+					halfSteps -= 1;
+				if (alteration == "#")
+					halfSteps += 1;
+				if (alteration == "+")
+					halfSteps += 2;
+			}
+		}
+		
+		toReturn.push(halfSteps);
+	}
+	
+	return toReturn;
+}
+
+/* CHORD VOICING FORMAT IN JS: Half-Steps
+ * The root and octave will be provided by the user, and numbers indicate half-steps up from that root.
+ *
+ * EXAMPLE: C3-A3-E4-G4
+ * Root C3
+ * [0, 9, 16, 19]
+ */
+ 
+function Chord(notes) {
+	this.notes = notes;
+}
 
 function playChord(chord) {
 	if (Array.isArray(chord))
@@ -88,10 +135,17 @@ function playChord(chord) {
 
 function playNote(index) {
 	index += root;
+	var octaveDisplace = 0;
+	// Since we're getting the notes from an array, the index must be a positive number
+	while (index < 0) {
+		// Get closer to a positive number and record the octave offset
+		index += 12;
+		octaveDisplace += 1;
+	}
 	var note = notes[index % notes.length];
-	visualKeyboard.dispatchNoteOn(visualKeyboard, (index + ((currentOctave - permanentOctaveOffset - octaveOffset) * 12)));
+	visualKeyboard.dispatchNoteOn(visualKeyboard, (index + ((currentOctave - permanentOctaveOffset - octaveOffset - octaveDisplace) * 12)));
 	//setTimeout(function() { releaseNote(index); }, 1000);
-	piano.play(note, currentOctave, 1);
+	piano.play(note, currentOctave - octaveDisplace, 1);
 }
 
 function releaseNote(index) {
@@ -117,5 +171,9 @@ function Voicing(jsonEntry, chordType) {
 	this.remarks = jsonEntry["remarks"];
 	this.voicing = parseIntervals(this.intervals);
 	
-	console.log(this);
+	this.play = function() {
+		playChord(this.voicing);
+	}
+	
+	//console.log(this);
 }
