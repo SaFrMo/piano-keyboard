@@ -50,6 +50,39 @@ $(document).ready(function() {
 			
 		}
 	}
+	
+	// Dropdown menu
+	$(".dropdown").on("click", function(e){
+		e.preventDefault();
+	  
+		if($(this).hasClass("open")) {
+			$(this).removeClass("open");
+			$(this).children("ul").slideUp("fast");
+		} else {
+			$(this).addClass("open");
+			$(this).children("ul").slideDown("fast");
+		}
+	});
+	
+	// Key selection
+	$(".keySelect").on("click", function(e) {
+		// Grab the first note and its accidental, if it has one
+		var rootNote = $(this).attr("id").match(/\w#?b?(?=\s)?/)[0];
+		// Find the new root
+		root = notes.indexOf(rootNote);
+		// Label menu with the new root name
+		$("#currentKeyLabel").html($(this).attr("id"));
+	});
+	
+	// Quality selection
+	$(".qualitySelect").on("click", function(e) {
+		$("#currentQualityLabel").html($(this).attr("id"));
+	});
+	
+	// Extension selection
+	$(".extensionSelect").on("click", function(e) {
+		$("#currentExtensionLabel").html($(this).html());
+	});
 
 	voicingsDictionary[2].play();
 	
@@ -58,6 +91,8 @@ $(document).ready(function() {
 //
 //
 //
+
+
 
 /* CHORD VOICING FORMAT IN JSON: Intervals
  * Chords are stored in the voicings dictionary as intervals - for example, a root position C6 chord 
