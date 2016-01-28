@@ -5,12 +5,15 @@ var permanentOctaveOffset = 0;
 var currentOctave = 3;
 var octaveOffset = 0;
 
+var currentQuality = "";
+var currentExtensions = "";
+
 var visualKeyboard;
 var root = -1;
 var notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var middleC;
 
-var majorIntervalsToHalfSteps = [0, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21];
+var majorIntervalsToHalfSteps = [0, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29, 31, 33, 35, 36];
 
 var chordTypes = [];
 var voicingsDictionary = [];
@@ -76,21 +79,49 @@ $(document).ready(function() {
 	
 	// Quality selection
 	$(".qualitySelect").on("click", function(e) {
-		$("#currentQualityLabel").html($(this).attr("id"));
+		var newQuality = $(this).attr("id");
+		$("#currentQualityLabel").html(newQuality);
+		currentQuality = newQuality;
 	});
 	
 	// Extension selection
 	$(".extensionSelect").on("click", function(e) {
-		$("#currentExtensionLabel").html($(this).html());
+		var newExtension = $(this).html();
+		$("#currentExtensionLabel").html(newExtension);
+	});
+	
+	$("#findChordsButton").on("click", function(e) {
+		populateChordsList();
 	});
 
-	voicingsDictionary[2].play();
+	voicingsDictionary[6].play();
 	
 });
 
 //
 //
 //
+
+// Called when user presses "Get Chords" button.
+function populateChordsList() {
+	var newHtml = "";
+	var chordArray = [];
+	
+	for (var i = 0; i < voicingsDictionary.length; i++) {
+		if (voicingsDictionary[i].chordType == currentQuality) {
+			var v = voicingsDictionary[i];
+			chordArray.push(v);
+			newHtml += v.remarks + "<br>";
+		}
+	}
+	
+	console.log(chordArray);
+	$("#chordOptions").html(newHtml);
+}
+
+function addChordVoicingSelector(text, voicing) {
+	
+}
 
 
 

@@ -165,7 +165,7 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
   margin-right:auto;
   position: relative;
   cursor: pointer;
-  background: #739cda;
+  background: #45B526;
   font-size: 1.55em;
   color: #fff;
   font-weight: normal;
@@ -180,4 +180,6 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
   text-align: center; 
   border-radius:10px;
 }
+
+.selectionButton:hover { background: #59DB35; }
  
