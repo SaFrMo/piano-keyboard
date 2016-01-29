@@ -17,6 +17,8 @@ var majorIntervalsToHalfSteps = [0, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21
 
 var chordTypes = [];
 var voicingsDictionary = [];
+var matchPool = [];
+var heldNotes = [];
 
 //
 //
@@ -93,6 +95,14 @@ $(document).ready(function() {
 	$("#findChordsButton").on("click", function(e) {
 		populateChordsList();
 	});
+	
+	// Voicing selection from match pool
+	$(document).on("click", '.chordSelector', function(e) {
+		e.preventDefault();
+		
+		var index = parseInt($(this).attr("id"));
+		matchPool[index].play();
+	});
 
 	voicingsDictionary[6].play();
 	
@@ -105,17 +115,19 @@ $(document).ready(function() {
 // Called when user presses "Get Chords" button.
 function populateChordsList() {
 	var newHtml = "";
-	var chordArray = [];
+	// Clear match pool array
+	matchPool = [];
+	var matchedChords = 0;
 	
 	for (var i = 0; i < voicingsDictionary.length; i++) {
 		if (voicingsDictionary[i].chordType == currentQuality) {
 			var v = voicingsDictionary[i];
-			chordArray.push(v);
-			newHtml += v.remarks + "<br>";
+			matchPool.push(v);
+			newHtml += "<a href='#' class='chordSelector' id='" + (matchedChords++).toString() + "'>" + v.remarks + "</a><br>";
 		}
 	}
 	
-	console.log(chordArray);
+	//console.log(chordArray);
 	$("#chordOptions").html(newHtml);
 }
 
@@ -209,7 +221,9 @@ function playNote(index) {
 		octaveDisplace += 1;
 	}
 	var note = notes[index % notes.length];
-	visualKeyboard.dispatchNoteOn(visualKeyboard, (index + ((currentOctave - permanentOctaveOffset - octaveOffset - octaveDisplace) * 12)));
+	var noteNumber = (index + ((currentOctave - permanentOctaveOffset - octaveOffset - octaveDisplace) * 12));
+	visualKeyboard.dispatchNoteOn(visualKeyboard, noteNumber);
+	heldNotes.push(noteNumber);
 	//setTimeout(function() { releaseNote(index); }, 1000);
 	piano.play(note, currentOctave - octaveDisplace, 1);
 }
@@ -238,6 +252,12 @@ function Voicing(jsonEntry, chordType) {
 	this.voicing = parseIntervals(this.intervals);
 	
 	this.play = function() {
+		// Clear existing notes
+		for (var i = 0; i < heldNotes.length; i++) {
+			releaseNote(heldNotes[i]);
+		}
+		heldNotes = [];
+		
 		playChord(this.voicing);
 	}
 	
