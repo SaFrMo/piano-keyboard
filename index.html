@@ -11,10 +11,10 @@
 		<script src="piano-voicings.js"></script>
 	</head>
 	<body>
-		<h1>piano keyboard demo</h1>
-		<p>
+		<h1 id="pageLabel">Piano Voicings Dictionary</h1>
+		<div id="pianoContainer">
 			<openmusic-piano-keyboard id="visualKeyboard" octaves="8"></openmusic-piano-keyboard>
-		</p>
+		</div>
 		
 		<div id="dropdownContainer">
 			<div class="dropdown ddmenu">
@@ -62,10 +62,14 @@
 			<span id="findChordsButton" class="selectionButton">Find Chords</span>
 		</div>
 		
+		<br>
+		<h2 id="resultsLabel">Results</h2>
+		<hr width="50%">
+		<br>
 		
-		<div id="chordOptions"></div>
+		<div id="chordOptions"><div style="text-align:center;">Build a chord to see some voicings!</div></div>
 		
-		
+		<div id="footer"><i>A piano voicings dictionary to help learn and perfect jazz chord voicings.</i></div>
 	</body>
 </html>
 

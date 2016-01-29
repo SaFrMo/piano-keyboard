@@ -1,3 +1,41 @@
+@import url('http://fonts.googleapis.com/css?family=Raleway');
+html {
+	background: #DCEDC8;
+	font-family: "Raleway", sans;
+}
+
+#chordOptions {
+	text-align:center;
+	height:20rem;
+	overflow-y:scroll;
+	margin-left:auto;
+	margin-right:auto;
+	width:75%;
+	background:#CBDCB7;
+	padding:10px;
+}
+
+#chordOptions a:link, #chordOptions a:visited {
+	background:#F33;
+	padding:10px;
+	text-decoration:none;
+	color:#fff;
+	border-radius:10px;
+	line-height:45px;
+}
+
+#chordOptions a:hover, #chordOptions a:active {
+	background:#F66;
+}
+
+#footer {
+	text-align:center;
+	margin:50px;
+}
+
+#pageLabel {
+	text-align:center;
+}
 
 openmusic-piano-keyboard * {
   -moz-box-sizing: border-box;
@@ -92,7 +130,12 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
 	color: #ff0;
 }
 
-@import url('http://fonts.googleapis.com/css?family=Oldenburg');
+#pianoContainer {
+	width:85%;
+	margin:100px;
+}
+
+
 
 
 /* user menu settings */
@@ -104,7 +147,7 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
   margin-right:auto;
   position: relative;
   cursor: pointer;
-  border-left: 4px solid #739cda;
+  border-left: 4px solid #448AFF;
   background: #fff;
   font-size: 1.55em;
   color: #656565;
@@ -144,11 +187,11 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
 .dropdown ul li a { 
   text-decoration: none;
   display: block;
-  color: #447dd3;
+  color: #212121;
   padding: 7px 15px;
 }
 .dropdown ul li a:hover {
-  color: #6fa0e9;
+  color: #212121;
   background: #e7f0f7;
 }
 
@@ -182,4 +225,11 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
 }
 
 .selectionButton:hover { background: #59DB35; }
+
+.chordSelector {
+
+}
  
+#resultsLabel {
+	text-align:center;
+}

@@ -131,10 +131,6 @@ function populateChordsList() {
 	$("#chordOptions").html(newHtml);
 }
 
-function addChordVoicingSelector(text, voicing) {
-	
-}
-
 
 
 /* CHORD VOICING FORMAT IN JSON: Intervals
