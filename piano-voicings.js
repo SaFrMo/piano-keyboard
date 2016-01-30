@@ -9,7 +9,7 @@ var currentQuality = "";
 var currentExtensions = "";
 
 var visualKeyboard;
-var root = -1;
+var root = 0;
 var notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var middleC;
 
@@ -19,6 +19,16 @@ var chordTypes = [];
 var voicingsDictionary = [];
 var matchPool = [];
 var heldNotes = [];
+
+var autoScroll = true;
+
+function smoothScroll(where) {
+	if (!autoScroll)
+		return;
+	
+	var targetPos = (isNaN(where) ? where.offset().top : where);
+	$("html, body").animate({scrollTop: targetPos}, 500);
+}
 
 //
 //
@@ -66,6 +76,7 @@ $(document).ready(function() {
 		} else {
 			$(this).addClass("open");
 			$(this).children("ul").slideDown("fast");
+			smoothScroll($(this));
 		}
 	});
 	
@@ -94,6 +105,7 @@ $(document).ready(function() {
 	
 	$("#findChordsButton").on("click", function(e) {
 		populateChordsList();
+		smoothScroll($(this));
 	});
 	
 	// Voicing selection from match pool
@@ -102,6 +114,13 @@ $(document).ready(function() {
 		
 		var index = parseInt($(this).attr("id"));
 		matchPool[index].play();
+		
+		smoothScroll($("#pianoContainer").offset().top - 20);
+	});
+	
+	$("#autoScrollToggle").on("click", function(e) {
+		autoScroll = !autoScroll;
+		$("#autoScrollToggle").html("Auto Scroll: " + (autoScroll ? "On" : "Off"));
 	});
 
 	voicingsDictionary[6].play();
@@ -198,14 +217,30 @@ function Chord(notes) {
 }
 
 function playChord(chord) {
-	if (Array.isArray(chord))
-		chord.forEach(function(note) { playNote(note); });
-	else {
-		chord.notes.forEach(function(note) {
-			playNote(note);
-		});
+	var toPlay = (Array.isArray(chord) ? chord : chord.notes);
+	
+	for (var i = 0; i < toPlay.length; i++) {
+		if (i == 0)
+			firstNoteIndex = toPlay[i];
+		if (i == toPlay.length - 1)
+			lastNoteIndex = toPlay[i];
+	}
+	toPlay.forEach(function(note) { playNote(note); });
+	console.log(firstNoteObject);
+	// Scroll to halfway between first and last notes of chord
+	if (autoScroll) {
+		var lowKey = $("#" + firstNoteObject.toString());
+		var lowKeyCenter = lowKey.offset().left + lowKey.width() / 2;
+		var highKey = $("#" + lastNoteObject.toString());
+		var highKeyCenter = highKey.offset().left + highKey.width() / 2;
+		console.log(lowKeyCenter);
+		console.log(highKeyCenter)
+		
+		$("#visualKeyboard").scrollLeft((lowKeyCenter + highKeyCenter) / 2);
 	}
 }
+
+var firstNoteIndex, lastNoteIndex, firstNoteObject, lastNoteObject;
 
 function playNote(index) {
 	index += root;
@@ -219,6 +254,10 @@ function playNote(index) {
 	var note = notes[index % notes.length];
 	var noteNumber = (index + ((currentOctave - permanentOctaveOffset - octaveOffset - octaveDisplace) * 12));
 	visualKeyboard.dispatchNoteOn(visualKeyboard, noteNumber);
+	if (firstNoteIndex == index)
+		firstNoteObject = noteNumber;
+	if (lastNoteIndex == index)
+		lastNoteObject = noteNumber;
 	heldNotes.push(noteNumber);
 	//setTimeout(function() { releaseNote(index); }, 1000);
 	piano.play(note, currentOctave - octaveDisplace, 1);

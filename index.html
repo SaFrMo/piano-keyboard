@@ -11,65 +11,72 @@
 		<script src="piano-voicings.js"></script>
 	</head>
 	<body>
-		<h1 id="pageLabel">Piano Voicings Dictionary</h1>
-		<div id="pianoContainer">
-			<openmusic-piano-keyboard id="visualKeyboard" octaves="8"></openmusic-piano-keyboard>
+		<div id="topContainer">
+			<br>
+			<h1 id="pageLabel">Piano Voicings Dictionary</h1>
+			<div id="pianoContainer">
+				<openmusic-piano-keyboard id="visualKeyboard" octaves="8"></openmusic-piano-keyboard>
+			</div>
 		</div>
 		
-		<div id="dropdownContainer">
-			<div class="dropdown ddmenu">
-			  <span id="currentKeyLabel">Root</span>
-			  <ul>
-				<li><a id ="C" class="keySelect" href="#">C</a></li>
-				<li><a id ="C# / Db" class="keySelect" href="#">C# / Db</a></li>
-				<li><a id ="D" class="keySelect" href="#">D</a></li>
-				<li><a id ="D# / Eb" class="keySelect" href="#">D# / Eb</a></li>
-				<li><a id ="E" class="keySelect" href="#">E</a></li>
-				<li><a id ="F" class="keySelect" href="#">F</a></li>
-				<li><a id ="F# / Gb" class="keySelect" href="#">F# / Gb</a></li>
-				<li><a id ="G" class="keySelect" href="#">G</a></li>
-				<li><a id ="G# / Ab" class="keySelect" href="#">G# / Ab</a></li>
-				<li><a id ="A" class="keySelect" href="#">A</a></li>
-				<li><a id ="A# / Bb" class="keySelect" href="#">A# / Bb</a></li>
-				<li><a id ="B" class="keySelect" href="#">B</a></li>
-			  </ul>
-			</div>
-			
-			<div class="dropdown ddmenu">
-			  <span id="currentQualityLabel">Quality</span>
-			  <ul>
-				<li><a id ="major" class="qualitySelect" href="#">major</a></li>
-				<li><a id ="minor" class="qualitySelect" href="#">minor</a></li>
-				<li><a id ="dominant" class="qualitySelect" href="#">dominant</a></li>
-				<li><a id ="half diminished" class="qualitySelect" href="#">half diminished</a></li>
-				<li><a id ="diminished" class="qualitySelect" href="#">diminished</a></li>
-				<li><a id ="augmented" class="qualitySelect" href="#">augmented</a></li>
-			  </ul>
-			</div>
-			
-			<div class="dropdown ddmenu">
-			  <span id="currentExtensionLabel">Extension</span>
-			  <ul>
-				<li><a id ="6" class="extensionSelect" href="#">6</a></li>
-				<li><a id ="7" class="extensionSelect" href="#">7</a></li>
-				<li><a id ="9" class="extensionSelect" href="#">9</a></li>
-				<li><a id ="11" class="extensionSelect" href="#">11</a></li>
-				<li><a id ="13" class="extensionSelect" href="#">13</a></li>
-			  </ul>
-			</div>
-			
+		<div id="bottomContainer">
+			<div id="dropdownContainer">
+				<div class="dropdown ddmenu">
+				  <span id="currentKeyLabel">Root</span>
+				  <ul>
+					<li><a id ="C" class="keySelect" href="#">C</a></li>
+					<li><a id ="C# / Db" class="keySelect" href="#">C# / Db</a></li>
+					<li><a id ="D" class="keySelect" href="#">D</a></li>
+					<li><a id ="D# / Eb" class="keySelect" href="#">D# / Eb</a></li>
+					<li><a id ="E" class="keySelect" href="#">E</a></li>
+					<li><a id ="F" class="keySelect" href="#">F</a></li>
+					<li><a id ="F# / Gb" class="keySelect" href="#">F# / Gb</a></li>
+					<li><a id ="G" class="keySelect" href="#">G</a></li>
+					<li><a id ="G# / Ab" class="keySelect" href="#">G# / Ab</a></li>
+					<li><a id ="A" class="keySelect" href="#">A</a></li>
+					<li><a id ="A# / Bb" class="keySelect" href="#">A# / Bb</a></li>
+					<li><a id ="B" class="keySelect" href="#">B</a></li>
+				  </ul>
+				</div>
+				
+				<div class="dropdown ddmenu">
+				  <span id="currentQualityLabel">Quality</span>
+				  <ul>
+					<li><a id ="major" class="qualitySelect" href="#">major</a></li>
+					<li><a id ="minor" class="qualitySelect" href="#">minor</a></li>
+					<li><a id ="dominant" class="qualitySelect" href="#">dominant</a></li>
+					<li><a id ="half diminished" class="qualitySelect" href="#">half diminished</a></li>
+					<li><a id ="diminished" class="qualitySelect" href="#">diminished</a></li>
+					<li><a id ="augmented" class="qualitySelect" href="#">augmented</a></li>
+				  </ul>
+				</div>
+				
+				<div class="dropdown ddmenu">
+				  <span id="currentExtensionLabel">Extension</span>
+				  <ul>
+					<li><a id ="6" class="extensionSelect" href="#">6</a></li>
+					<li><a id ="7" class="extensionSelect" href="#">7</a></li>
+					<li><a id ="9" class="extensionSelect" href="#">9</a></li>
+					<li><a id ="11" class="extensionSelect" href="#">11</a></li>
+					<li><a id ="13" class="extensionSelect" href="#">13</a></li>
+				  </ul>
+				</div>
+				
 
-			<span id="findChordsButton" class="selectionButton">Find Chords</span>
+				<span id="findChordsButton" class="selectionButton">Find Chords</span>
+			</div>
+			
+			<br><br>
+			<h2 id="resultsLabel">Results</h2>
+			<hr width="50%">
+			<br>
+			
+			<div id="chordOptions"><div style="text-align:center;">Build a chord to see some voicings!</div></div>
+			
+			<div id="footer"><i>A piano voicings dictionary to help learn and perfect jazz chord voicings.</i></div>
 		</div>
 		
-		<br>
-		<h2 id="resultsLabel">Results</h2>
-		<hr width="50%">
-		<br>
-		
-		<div id="chordOptions"><div style="text-align:center;">Build a chord to see some voicings!</div></div>
-		
-		<div id="footer"><i>A piano voicings dictionary to help learn and perfect jazz chord voicings.</i></div>
+		<div id="autoScrollToggle">Auto Scroll: On</div>
 	</body>
 </html>
 

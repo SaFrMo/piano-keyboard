@@ -1,7 +1,24 @@
 @import url('http://fonts.googleapis.com/css?family=Raleway');
-html {
-	background: #DCEDC8;
+html, body {
+	background: #fff;
 	font-family: "Raleway", sans;
+	margin:0;
+	padding:0;
+}
+
+#topContainer {
+	background:#333;
+	color:#fff;
+	margin:0;
+	padding:0;
+}
+
+#bottomContainer {
+	background:#fff;
+	color:#333;
+	margin:0;
+	padding:0;
+	width:100%;
 }
 
 #chordOptions {
@@ -33,7 +50,22 @@ html {
 	margin:50px;
 }
 
+#autoScrollToggle {
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	padding:10px;
+	background:#333;
+	color:#fff;
+}
+
+#autoScrollToggle:hover {
+	cursor:pointer;
+}
+
 #pageLabel {
+	background:#333;
+	margin-top:0;
 	text-align:center;
 }
 
