@@ -91,7 +91,7 @@
 	proto.onDivMouseDown = function( keyboard, ev ) {
 
 		var key = ev.target;
-		this.dispatchNoteOn( keyboard, key.dataset.index );
+		proto.dispatchNoteOn( keyboard, key.dataset.index );
 
 	}
 
@@ -99,7 +99,7 @@
 	proto.onDivMouseUp = function( keyboard, ev ) {
 
 		var key = ev.target;
-		this.dispatchNoteOff( keyboard, key.dataset.index );
+		proto.dispatchNoteOff( keyboard, key.dataset.index );
 
 	}
 

@@ -10,7 +10,7 @@ html, body {
 	background:#333;
 	color:#fff;
 	margin:0;
-	padding:0;
+	padding:1px;
 }
 
 #bottomContainer {
@@ -28,7 +28,7 @@ html, body {
 	margin-left:auto;
 	margin-right:auto;
 	width:75%;
-	background:#CBDCB7;
+	background:#CCC;
 	padding:10px;
 }
 
@@ -214,7 +214,10 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
-.dropdown ul li { font-size: 0.9em; }
+.dropdown ul li { 
+	font-size: 0.9em; 
+	
+}
 
 .dropdown ul li a { 
   text-decoration: none;
@@ -225,6 +228,10 @@ openmusic-piano-keyboard .key.black:active, openmusic-piano-keyboard .key.black.
 .dropdown ul li a:hover {
   color: #212121;
   background: #e7f0f7;
+}
+
+.dropdown ul li {
+	list-style-image: url(empty.png);
 }
 
 #dropdownContainer {

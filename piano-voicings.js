@@ -109,7 +109,7 @@ $(document).ready(function() {
 	});
 	
 	// Voicing selection from match pool
-	$(document).on("click", '.chordSelector', function(e) {
+	$(document).on("click", ".chordSelector", function(e) {
 		e.preventDefault();
 		
 		var index = parseInt($(this).attr("id"));
@@ -226,15 +226,12 @@ function playChord(chord) {
 			lastNoteIndex = toPlay[i];
 	}
 	toPlay.forEach(function(note) { playNote(note); });
-	console.log(firstNoteObject);
 	// Scroll to halfway between first and last notes of chord
 	if (autoScroll) {
 		var lowKey = $("#" + firstNoteObject.toString());
 		var lowKeyCenter = lowKey.offset().left + lowKey.width() / 2;
 		var highKey = $("#" + lastNoteObject.toString());
 		var highKeyCenter = highKey.offset().left + highKey.width() / 2;
-		console.log(lowKeyCenter);
-		console.log(highKeyCenter)
 		
 		$("#visualKeyboard").scrollLeft((lowKeyCenter + highKeyCenter) / 2);
 	}
