@@ -124,6 +124,7 @@ $(document).ready(function() {
 	});
 
 	voicingsDictionary[6].play();
+	console.log(voicingsDictionary[0]);
 	
 });
 
@@ -282,6 +283,7 @@ function Voicing(jsonEntry, chordType) {
 	this.intervals = jsonEntry["intervals"];
 	this.remarks = jsonEntry["remarks"];
 	this.voicing = parseIntervals(this.intervals);
+	this.extensions = jsonEntry["extensions"];
 	
 	this.play = function() {
 		// Clear existing notes
